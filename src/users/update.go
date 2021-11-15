@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -19,6 +20,7 @@ func UpdatePositon(res http.ResponseWriter, req *http.Request) {
 	if read_err != nil {
 		return
 	}
+	fmt.Println(body)
 	var pos Position
 	unmarshal_err := json.Unmarshal(body, &pos) //marshal into struct Position
 	if utils.HandleStandardError(unmarshal_err, res) != nil {

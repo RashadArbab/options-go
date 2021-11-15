@@ -33,8 +33,8 @@ func main() {
 	http.HandleFunc("/qtradeOauth", handleQtrade)
 	http.HandleFunc("/calculate", blackscholes.CalcBlackScholes)
 	http.HandleFunc("/users", users.UserEndpoints)
-	http.HandleFunc("/positions", users.PostionsEndpoints)
-	http.HandleFunc("/position", users.PositionEndpoints)
+	http.HandleFunc("/positions", auth.AuthRequired(users.PostionsEndpoints))
+	http.HandleFunc("/position", auth.AuthRequired(users.PositionEndpoints))
 	http.HandleFunc("/login", auth.AuthenticateUser)
 
 	err := http.ListenAndServe(":8080", nil)

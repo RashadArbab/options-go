@@ -24,7 +24,7 @@ type Position struct {
 
 func UserEndpoints(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "GET" {
-		GetUser(res, req)
+		GetUser(res, req) 
 	} else if req.Method == "POST" {
 		CreateUser(res, req)
 	} else {

@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -48,11 +49,11 @@ func CreateUser(res http.ResponseWriter, req *http.Request) {
 func CreatePositon(res http.ResponseWriter, req *http.Request) {
 
 	log.Println("create-position:")
-
 	body, read_err := utils.ReadRequest(res, req) //read into []byte
 	if read_err != nil {
 		return
 	}
+	fmt.Println(string(body))
 	var pos Position
 	unmarshal_err := json.Unmarshal(body, &pos) //marshal into struct Position
 	if utils.HandleStandardError(unmarshal_err, res) != nil {
@@ -62,7 +63,8 @@ func CreatePositon(res http.ResponseWriter, req *http.Request) {
 	pos.ID = uuid.NewString()
 
 	result := db.GormCon().Clauses(clause.OnConflict{
-		Columns:   []clause.Column{{Name: "user_id"}, {Name: "ticker"}},
+		Columns: []clause.Column{{Name: "user_id"}, {Name: "ticker"}},
+		//change to throw error position already exists
 		DoUpdates: clause.AssignmentColumns([]string{"amount"}),
 	}).Create(&pos)
 
